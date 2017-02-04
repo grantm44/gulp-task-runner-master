@@ -8,7 +8,8 @@ var gulp = require('gulp'),
   maps = require('gulp-sourcemaps'),
   rename = require('gulp-rename'),
   cleanCSS = require('gulp-clean-css'),
-  image = require('gulp-imagemin');
+  image = require('gulp-imagemin'),
+  connect = require('gulp-connect');
 
  
 
@@ -23,6 +24,16 @@ gulp.task('styles', styles);
 gulp.task('images', images);
 
 gulp.task('build', ['clean', 'styles', 'scripts', 'images']);
+
+gulp.task('default', ['build']);
+
+gulp.task('serve', ['build'], function(){
+  gulp.watch('js/**/*.js', ['scripts']);
+  connect.server({
+    port: 3000
+  });
+});
+
 
 function styles(){
   return gulp.src('sass/global.scss')
@@ -50,4 +61,5 @@ function images(){
     .pipe(image())
     .pipe(gulp.dest('dist/content'));
 }
+
 
